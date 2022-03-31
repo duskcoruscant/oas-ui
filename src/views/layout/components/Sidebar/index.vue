@@ -1,6 +1,9 @@
 <template>
   <!-- http://element-cn.eleme.io/#/zh-CN/component/menu -->
-  <el-menu mode="vertical" :default-active="$route.path">
+  <el-menu 
+    mode="vertical" 
+    :default-active="$route.path"
+  >
     <sidebar-item :routes="permissionRouters" />
   </el-menu>
 </template>

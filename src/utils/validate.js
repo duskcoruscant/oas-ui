@@ -34,7 +34,26 @@ export function isValidateUpperCase(str) {
  * @returns {boolean}
  */
 export function isValidateEmail(email) {
-  const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
   return reg.test(email)
 }
 
+/**
+ * 手机号
+ * @param phone
+ * @returns {boolean}
+ */
+export function isValidatePhone(phone) {
+  const reg = /^1[3|4|5|7|8][0-9]{9}$/
+  return reg.test(phone)
+}
+
+/**
+ * 身份证号
+ * @param idCard
+ * @returns {boolean}
+ */
+export function isValidateIdCard(idCard) {
+  const reg = /\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+  return reg.test(idCard)
+}

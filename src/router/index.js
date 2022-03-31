@@ -43,56 +43,52 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/account',
+    path: '/manageCenter',
     component: Layout,
-    redirect: '/account/list',
-    icon: 'name',
-    noDropDown: true,
+    redirect: '/manageCenter/employee',
+    icon: 'config',
+    // noDropDown: true,
+    name: '管理中心',
+    meta: { permission: ['manage'] },
     children: [{
-      path: 'list',
-      name: '账户管理',
-      component: _import('account/list'),
-      meta: { permission: ['account:list'] }
+      path: 'employee',
+      name: '员工管理',
+      icon: 'user',
+      component: _import('hwenbin/employee/list'),
+      meta: {
+        permission: ['manage:employee:list']
+      }
+    }, {
+      path: 'department',
+      name: '部门管理',
+      icon: 'tree',
+      component: _import('hwenbin/department/list'),
+      meta: { permission: ['manage:department:list'] }
+    }, {
+      path: 'position',
+      name: '职位管理',
+      icon: 'post',
+      component: _import('hwenbin/position/list'),
+      meta: { permission: ['manage:position:list'] }
+    }, {
+      path: 'role',
+      name: '角色管理',
+      icon: 'peoples',
+      component: _import('hwenbin/role/list'),
+      meta: { permission: ['manage:role:list'] }
     }]
   },
 
   {
-    path: '/account',
+    path: '/accountCenter',
     component: Layout,
-    redirect: '/account/detail',
+    redirect: '/accountCenter/index',
     hidden: true,
     children: [{
-      path: 'detail',
+      path: 'index',
       name: '账户中心',
-      component: _import('account/detail')
-    }]
-  },
-
-  {
-    path: '/role',
-    component: Layout,
-    redirect: '/role/list',
-    icon: 'role',
-    noDropDown: true,
-    children: [{
-      path: 'list',
-      name: '角色管理',
-      component: _import('role/list'),
-      meta: { permission: ['role:list'] }
-    }]
-  },
-
-  {
-    path: '/task',
-    component: Layout,
-    redirect: '/task/list',
-    icon: 'role',
-    noDropDown: true,
-    children: [{
-      path: 'list',
-      name: '任务分派',
-      component: _import('task/list'),
-      meta: { permission: ['task:list'] }
+      component: _import('accountCenter/index')
     }]
   }
+
 ]

@@ -10,7 +10,7 @@
       label-position="left"
       label-width="0px"
     >
-      <h3 class="title">后台登录</h3>
+      <h3 class="title">hwenbin-OA办公系统</h3>
       <el-form-item prop="nameOrEmail">
         <span class="svg-container svg-container_login">
           <icon-svg icon-class="name" />
@@ -34,7 +34,7 @@
           placeholder="请输入密码"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click.native.prevent="showPwd">
+        <span class="show-pwd" @click="showPwd">
           <icon-svg icon-class="eye" />
         </span>
       </el-form-item>
@@ -46,6 +46,10 @@
           @click.native.prevent="handleLogin"
         >登录</el-button>
       </el-form-item>
+      <div class="tips">
+        <span style="margin-right:20px;">username: admin</span>
+        <span> password: admin123</span>
+      </div>
     </el-form>
   </div>
 </template>
@@ -58,14 +62,14 @@ export default {
   data() {
     const validateNameOrEmail = (rule, value, callback) => {
       if (value.length < 3) {
-        callback(new Error('账户名长度必须在3或以上'))
+        callback(new Error('账户名长度必须为3位或以上'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码长度必须在6或以上'))
+        callback(new Error('密码长度必须为6位或以上'))
       } else {
         callback()
       }
@@ -100,7 +104,7 @@ export default {
           if (isValidateEmail(this.loginForm.nameOrEmail)) {
             account.email = this.loginForm.nameOrEmail
           } else {
-            account.name = this.loginForm.nameOrEmail
+            account.nickname = this.loginForm.nameOrEmail
           }
           account.password = this.loginForm.password
           this.loading = true

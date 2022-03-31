@@ -25,7 +25,10 @@
               :key="child"
             />
             <router-link v-else class="menu-indent" :to="item.path + '/' + child.path" :key="child">
-              <el-menu-item :index="item.path + '/' + child.path">{{ child.name }}</el-menu-item>
+              <el-menu-item :index="item.path + '/' + child.path">
+                <icon-svg v-if="child.icon" :icon-class="child.icon" />
+                {{ child.name }}
+              </el-menu-item>
             </router-link>
           </div>
         </template>

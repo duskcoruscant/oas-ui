@@ -6,7 +6,7 @@ const account = {
     token: getToken(),
     accountId: -1,
     email: null,
-    name: null,
+    nickname: null,
     loginTime: -1,
     registerTime: -1,
     roleName: null,
@@ -20,7 +20,7 @@ const account = {
     SET_ACCOUNT: (state, account) => {
       state.accountId = account.id
       state.email = account.email
-      state.name = account.name
+      state.nickname = account.nickname
       state.loginTime = account.loginTime
       state.registerTime = account.registerTime
       state.roleName = account.roleName
@@ -30,7 +30,7 @@ const account = {
       state.token = null
       state.accountId = -1
       state.email = null
-      state.name = null
+      state.nickname = null
       state.loginTime = -1
       state.registerTime = -1
       state.roleName = null

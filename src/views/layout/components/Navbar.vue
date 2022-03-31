@@ -8,7 +8,7 @@
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <router-link class="inlineBlock" to="/account/detail">
+        <router-link class="inlineBlock" to="/accountCenter/index">
           <el-dropdown-item>账户中心</el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
