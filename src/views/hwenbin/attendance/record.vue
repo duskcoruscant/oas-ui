@@ -1,6 +1,5 @@
 <template>
     <el-calendar v-model="currentDate">
-        <!-- <template #dateCell="{data}"> -->
         <template slot="dateCell" slot-scope="{date, data}">
             {{ data.day.slice(8) }}
             <div v-if="verifyDateRange(date)" class="clock-description">
@@ -34,7 +33,7 @@
                     <el-icon color="#F56C6C">
                         <circle-close-filled/>
                     </el-icon>
-                    <span style="color: #F56C6C">{{ date.getMonth != currentMonth || date.getDate() != currentDay ? '缺勤' : '今日未考勤' }}</span>
+                    <span style="color: #F56C6C">{{ date.getMonth() == currentMonth && date.getDate() == currentDay ? '今日未考勤' : '缺勤' }}</span>
                 </template>
             </div>
         </template>
@@ -51,6 +50,8 @@ export default {
     return {
       currentDate: new Date(),
       currentMonth: new Date().getMonth(),
+      // 日历显示月份
+      showMonth: new Date().getMonth(),
       currentDay: new Date().getDate(),
       currentDateTailTime: new Date().setHours(23),
       attendances: []
@@ -58,8 +59,8 @@ export default {
   },
   watch: {
     currentDate(currentDate) {
-      if (currentDate.getMonth() !== this.currentMonth) {
-        this.currentMonth = currentDate.getMonth()
+      if (currentDate.getMonth() !== this.showMonth) {
+        this.showMonth = currentDate.getMonth()
         this.getAttendances(currentDate)
       }
     }
@@ -88,7 +89,7 @@ export default {
       return false
     },
     verifyDateRange(date) {
-      return date.getMonth() === this.currentMonth && date < this.currentDateTailTime
+      return date.getMonth() === this.showMonth && date < this.currentDateTailTime
     },
     isAbnormalAttendance(data) {
       return !data.attendance.clockOutTime ||
