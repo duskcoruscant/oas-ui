@@ -80,6 +80,26 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/attendanceCenter',
+    component: Layout,
+    redirect: '/attendanceCenter/attendance',
+    icon: 'config',
+    name: '考勤中心',
+    meta: { permission: ['manage'] },
+    children: [{
+      path: 'clock',
+      name: '考勤',
+      icon: 'user',
+      component: _import('hwenbin/attendance/clock')
+    }, {
+      path: 'record',
+      name: '考勤记录',
+      icon: 'post',
+      component: _import('hwenbin/attendance/record')
+    }]
+  },
+
+  {
     path: '/accountCenter',
     component: Layout,
     redirect: '/accountCenter/index',
