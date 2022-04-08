@@ -62,9 +62,18 @@ a:hover {
 }
 
 .svg-icon {
-  width: 1em;
+  width: 2em;
   height: 1em;
-  vertical-align: -0.15em;
+  vertical-align: -0.05em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.el-icon {
+  width: 1.5em;
+  height: 1em;
+  margin-left: 0.5em;
+  vertical-align: -0.05em;
   fill: currentColor;
   overflow: hidden;
 }

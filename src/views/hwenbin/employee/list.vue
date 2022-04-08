@@ -103,7 +103,7 @@
           </el-table-column>
         </el-table>
 
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size"
+        <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNo" :limit.sync="listQuery.pageSize"
                     @pagination="getEmployeeList"/>
       </el-col>
     </el-row>
@@ -322,8 +322,8 @@ export default {
       },
       // 查询参数
       listQuery: {
-        page: 1,
-        size: 10,
+        pageNo: 1,
+        pageSize: 10,
         name: undefined,
         phone: undefined,
         status: undefined,
@@ -491,7 +491,7 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.listQuery.page = 1
+      this.listQuery.pageNo = 1
       this.getEmployeeList()
     },
     /** 重置按钮操作 */

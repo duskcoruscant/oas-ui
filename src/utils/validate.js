@@ -57,3 +57,13 @@ export function isValidateIdCard(idCard) {
   const reg = /\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
   return reg.test(idCard)
 }
+
+/**
+ * 文件名称
+ * @param {*} filename
+ * @returns
+ */
+export function isValidatefilename(filename) {
+  const reg = new RegExp(`[\\\\/:*?"<>|]`)
+  return reg.test(filename)
+}

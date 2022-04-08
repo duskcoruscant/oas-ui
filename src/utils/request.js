@@ -32,6 +32,10 @@ service.interceptors.request.use(config => {
 // response拦截器
 service.interceptors.response.use(
   response => {
+    // 文件下载返回二进制流
+    if (response.request.responseType === 'blob') {
+      return response
+    }
     if (response.data.code === 200) {
       return response.data
     } else {

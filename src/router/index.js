@@ -89,13 +89,38 @@ export const asyncRouterMap = [
     children: [{
       path: 'clock',
       name: '考勤',
-      icon: 'user',
+      icon: 'el-icon-thumb',
       component: _import('hwenbin/attendance/clock')
     }, {
       path: 'record',
       name: '考勤记录',
-      icon: 'post',
+      icon: 'el-icon-date',
       component: _import('hwenbin/attendance/record')
+    }]
+  },
+
+  {
+    path: '/fileCenter',
+    component: Layout,
+    redirect: '/fileCenter/personal',
+    icon: 'config',
+    name: '文件中心',
+    meta: { permission: ['manage'] },
+    children: [{
+      path: 'personal',
+      name: '个人文件',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/file/personal')
+    }, {
+      path: 'share',
+      name: '共享文件',
+      icon: 'el-icon-share',
+      component: _import('hwenbin/file/share')
+    }, {
+      path: 'recycleBin',
+      name: '回收站',
+      icon: 'el-icon-delete',
+      component: _import('hwenbin/file/recycleBin')
     }]
   },
 
