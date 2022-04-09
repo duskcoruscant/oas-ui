@@ -51,9 +51,9 @@ export function uploadFiles(data) {
 }
 
 // 删除文件 —— 将文件移入回收站
-export function removeFileToRecycleBin(id) {
+export function removeFileToRecycleBin(fileId, operatorId) {
   return request({
-    url: baseUrl + '/' + id,
+    url: baseUrl + '?id=' + fileId + (operatorId === undefined ? '' : '&operatorId=' + operatorId),
     method: 'delete'
   })
 }

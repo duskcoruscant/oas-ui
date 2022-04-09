@@ -429,7 +429,11 @@ export default {
         this.$modal.msgSuccess('文件删除成功，七天内可在回收站进行恢复')
         this.handleQuery()
       }).catch(error => {
-        this.$modal.msgError('文件删除失败', error)
+        if (error === 'cancel') {
+          this.$modal.msgWarning('已取消删除')
+        } else {
+          this.$modal.msgError('文件删除失败' + error)
+        }
       })
     }
   }

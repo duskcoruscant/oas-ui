@@ -135,7 +135,7 @@
 <script>
 
 import { mapGetters } from 'vuex'
-import { getFileList, createFolder, renameFile, downloadFile, uploadFiles } from '@/api/file'
+import { getFileList, createFolder, renameFile, downloadFile, uploadFiles, removeFileToRecycleBin } from '@/api/file'
 import { isValidatefilename } from '@/utils/validate'
 
 export default {
@@ -248,9 +248,9 @@ export default {
         case 'handleRename':
           this.handleRename(row)
           break
-        // case 'handleDelete':
-        //   this.handleDelete(row)
-        //   break
+        case 'handleDelete':
+          this.handleDelete(row)
+          break
         // case 'handleResetPwd':
         //   this.handleResetPwd(row)
         //   break
@@ -420,6 +420,22 @@ export default {
     // 批量下载按钮
     handleBatchDownload() {
       //
+    },
+    // 删除文件 / 文件夹
+    handleDelete(row) {
+      const operatorId = this.accountId
+      this.$modal.confirm('是否确认删除文件(夹)“' + row.name + '"?').then(function() {
+        return removeFileToRecycleBin(row.id, operatorId)
+      }).then(() => {
+        this.$modal.msgSuccess('文件删除成功，七天内可在回收站进行恢复')
+        this.handleQuery()
+      }).catch(error => {
+        if (error === 'cancel') {
+          this.$modal.msgWarning('已取消删除')
+        } else {
+          this.$modal.msgError('文件删除失败' + error)
+        }
+      })
     }
   }
 }
