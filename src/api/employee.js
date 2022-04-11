@@ -59,3 +59,11 @@ export default {
     })
   }
 }
+
+// 获取empId员工所在部门enable员工列表
+export function getDeptEnableEmpListByEmpId(empId) {
+  return request({
+    url: '/employee/listDeptEmpByEmpId/' + empId,
+    method: 'get'
+  })
+}

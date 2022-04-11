@@ -125,6 +125,46 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/workLog',
+    component: Layout,
+    redirect: '/workLog/send',
+    icon: 'config',
+    name: '工作日志',
+    meta: { permission: ['manage'] },
+    children: [{
+      path: 'send',
+      name: '我发出的',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/worklog/send')
+    }, {
+      path: 'receive',
+      name: '我收到的',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/worklog/receive')
+    }]
+  },
+
+  {
+    path: '/test',
+    component: Layout,
+    redirect: '/test/test',
+    icon: 'config',
+    name: '测试',
+    meta: { permission: ['manage'] },
+    children: [{
+      path: 'test',
+      name: '测试1',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/test/test')
+    }, {
+      path: 'test2',
+      name: '测试2',
+      icon: 'el-icon-share',
+      component: _import('hwenbin/test/test2')
+    }]
+  },
+
+  {
     path: '/accountCenter',
     component: Layout,
     redirect: '/accountCenter/index',
