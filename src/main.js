@@ -30,6 +30,9 @@ Vue.use(ElementUI, {
 
 Vue.use(plugins)
 
+import wsk from './utils/websocket.js' // 引入 websocket
+Vue.prototype.$wsk = wsk // 挂载
+
 // 全局方法挂载
 Vue.prototype.request = request
 Vue.prototype.hasPermission = hasPermission
