@@ -199,6 +199,7 @@ export default {
       this.form = {
         id: undefined,
         type: 1,
+        title: undefined,
         todayContent: undefined,
         tomorrowContent: undefined,
         question: undefined
