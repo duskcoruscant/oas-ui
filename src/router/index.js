@@ -145,6 +145,26 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/conference',
+    component: Layout,
+    redirect: '/conference/list',
+    icon: 'config',
+    name: '会议中心',
+    meta: { permission: ['manage'] },
+    children: [{
+      path: 'equipment',
+      name: '设备管理',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/conference/conferenceEquipment')
+    }, {
+      path: 'room',
+      name: '会议室管理',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/conference/conferenceRoom')
+    }]
+  },
+
+  {
     path: '/test',
     component: Layout,
     redirect: '/test/test',
@@ -161,6 +181,11 @@ export const asyncRouterMap = [
       name: '测试2',
       icon: 'el-icon-share',
       component: _import('hwenbin/test/test2')
+    }, {
+      path: 'test3',
+      name: '测试3',
+      icon: 'el-icon-share',
+      component: _import('hwenbin/test/test3')
     }]
   },
 

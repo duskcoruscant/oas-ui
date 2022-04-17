@@ -32,8 +32,19 @@ export const SEX_TYPE_DICT = [{
  */
 export const COMMON_STATUS_DICT = [{
   value: 0,
-  label: '开启'
+  label: '正常'
 }, {
   value: 1,
-  label: '禁用'
+  label: '停用'
+}]
+
+export const CONFERENCE_EQUIPMENT_STATUS_DICT = [{
+  value: 0,
+  label: '空闲'
+}, {
+  value: 1,
+  label: '使用中'
+}, {
+  value: 2,
+  label: '损坏'
 }]

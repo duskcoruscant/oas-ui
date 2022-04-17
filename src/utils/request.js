@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/token'
+import qs from 'qs'
 
 // 创建axios实例
 // https://www.kancloud.cn/yunye/axios/234845
@@ -22,6 +23,16 @@ service.interceptors.request.use(config => {
     // 让每个请求携带自定义token 请根据实际情况自行修改
     config.headers['Authorization'] = getToken()
   }
+
+  // get方法传递数组的处理
+  if (config.method === 'get') {
+    config.paramsSerializer = function(params) {
+      // qs.stringify({ a: ['b', 'c'] }, { arrayFormat: 'repeat' })
+      // 'a=b&a=c'
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    }
+  }
+
   return config
 }, error => {
   // Do something with request error
