@@ -165,6 +165,26 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/missive',
+    component: Layout,
+    redirect: '/missive/list',
+    icon: 'config',
+    name: '公文中心',
+    meta: { permission: ['manage'] },
+    children: [{
+      path: 'send',
+      name: '发文管理',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/missive/send')
+    }, {
+      path: 'receive',
+      name: '收文管理',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/missive/receive')
+    }]
+  },
+
+  {
     path: '/test',
     component: Layout,
     redirect: '/test/test',

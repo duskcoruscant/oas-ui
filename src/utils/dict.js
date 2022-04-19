@@ -48,3 +48,34 @@ export const CONFERENCE_EQUIPMENT_STATUS_DICT = [{
   value: 2,
   label: '损坏'
 }]
+
+/**
+ * 公文类型字典
+ */
+export const MISSIVE_TYPE_DICT = [{
+  value: 1,
+  label: '通告'
+}, {
+  value: 2,
+  label: '指示'
+}, {
+  value: 3,
+  label: '议案'
+}, {
+  value: 4,
+  label: '决议'
+}, {
+  value: 5,
+  label: '命令'
+}]
+
+/**
+ * 公文机密程度字典
+ */
+export const MISSIVE_SECRET_LEVEL_DICT = [{
+  value: 1,
+  label: '公开'
+}, {
+  value: 2,
+  label: '部门'
+}]
