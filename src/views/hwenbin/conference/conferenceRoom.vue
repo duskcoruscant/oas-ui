@@ -65,10 +65,20 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-                     >修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                     >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleAddRes(scope.row)" v-if="scope.row.status === 0"
+                    >预订会议</el-button>
+          <el-dropdown @command="(command) => handleCommand(command, scope.$index, scope.row)"
+                      >
+            <span class="el-dropdown-link">
+              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handleUpdate"
+                size="mini" type="text" icon="el-icon-edit">修改</el-dropdown-item>
+              <el-dropdown-item command="handleDelete"
+                size="mini" type="text" icon="el-icon-delete">删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -80,7 +90,7 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="92px">
         <el-form-item label="会议室编号" prop="code">
-          <el-input v-model="form.code" placeholder="请输入会议室编号" />
+          <el-input v-model="form.code" placeholder="请输入会议室编号" :disabled="form.id ? true : false" />
         </el-form-item>
         <el-form-item label="会议室地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入会议室地址" />
@@ -210,6 +220,7 @@ export default {
         status: 0,
         conferenceEquipmentIds: []
       }
+      this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -227,6 +238,19 @@ export default {
       this.open = true
       this.getCascaderSelectOptions()
       this.title = '添加会议室'
+    },
+    /** 更多操作 */
+    handleCommand(command, index, row) {
+      switch (command) {
+        case 'handleUpdate':
+          this.handleUpdate(row)
+          break
+        case 'handleDelete':
+          this.handleDelete(row)
+          break
+        default:
+          break
+      }
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -282,6 +306,19 @@ export default {
       }).then(() => {
         this.pageQuery()
         this.$modal.msgSuccess('删除成功')
+      }).catch(() => {})
+    },
+    /** 预订会议按钮操作 */
+    handleAddRes(row) {
+      this.$modal.confirm('是否跳转前往预订会议?').then(function() {
+        return
+      }).then(() => {
+        this.$router.push({
+          path: 'reservation',
+          query: {
+            roomCode: row.code
+          }
+        })
       }).catch(() => {})
     },
     /** 导出按钮操作 */

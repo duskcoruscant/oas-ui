@@ -79,3 +79,17 @@ export const MISSIVE_SECRET_LEVEL_DICT = [{
   value: 2,
   label: '部门'
 }]
+
+/**
+ * 会议状态字典
+ */
+export const CONFERENCE_PROCESS_STATUS_DICT = [{
+  value: 1,
+  label: '未开始'
+}, {
+  value: 2,
+  label: '进行中'
+}, {
+  value: 3,
+  label: '已结束'
+}]

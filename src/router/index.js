@@ -161,6 +161,16 @@ export const asyncRouterMap = [
       name: '会议室管理',
       icon: 'el-icon-files',
       component: _import('hwenbin/conference/conferenceRoom')
+    }, {
+      path: 'reservation',
+      name: '会议预订',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/conference/reservation')
+    }, {
+      path: 'resHistory',
+      name: '会议列表',
+      icon: 'el-icon-files',
+      component: _import('hwenbin/conference/resHistory')
     }]
   },
 
