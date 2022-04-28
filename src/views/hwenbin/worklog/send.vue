@@ -1,18 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
-      <el-form-item label="角色名称" prop="name">
-        <el-input v-model="queryParams.name" placeholder="请输入角色名称" clearable size="small" style="width: 240px"
-                  @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="角色标识" prop="code">
-        <el-input v-model="queryParams.code" placeholder="请输入角色标识" clearable size="small" style="width: 240px"
-                  @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="角色状态" clearable size="small" style="width: 240px">
-          <el-option v-for="item in CommonStatusDict" :key="item.value" :label="item.label" :value="item.value"/>
+      <el-form-item label="日志类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择日志类型" clearable>
+          <el-option v-for="item in WorkLogTypeDict" :key="item.value" :label="item.label" :value="item.value"/>
         </el-select>
+      </el-form-item>
+      <el-form-item label="日志标题" prop="title">
+        <el-input v-model="queryParams.title" placeholder="请输入日志标题" clearable size="small" style="width: 240px"
+                  @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker v-model="dateRange" size="small" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
@@ -33,7 +29,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="workLogList">
-      <el-table-column type="selection" width="55" />
+      <!-- <el-table-column type="selection" width="55" /> -->
       <el-table-column label="日志类型" prop="type" align="center" width="120">
         <template slot-scope="scope">
           <el-tag :disable-transitions="true" type="primary" v-if="scope.row.type==1">日报</el-tag>
@@ -52,12 +48,15 @@
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="通知人" align="center" prop="sendEmpNames" width="160" />
-      <el-table-column label="已读人" align="center" prop="readEmpNames" width="160" />
+      <el-table-column label="通知人" align="center" prop="sendEmpNames" :formatter="formatArrayToString" width="160" :show-overflow-tooltip="true" />
+      <el-table-column label="已读人" align="center" prop="readEmpNames" :formatter="formatArrayToString" width="160" :show-overflow-tooltip="true" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-badge :value="scope.row.commentCount" class="item">
+            <el-button size="mini" type="text" icon="el-icon-chat-dot-round" @click="handleCheckComment(scope.row)">评论</el-button>
+          </el-badge>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-                     >修改</el-button>
+                     style="padding-left: 12px">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -104,14 +103,41 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 评论按钮对话框 -->
+    <el-dialog title="查看评论" :visible.sync="openCommentDialog" width="650px" append-to-body>
+      <el-descriptions class="margin-top" :column="1" border :labelStyle="{ width: '120px' }"
+        :title="(commentDialogData.type === 1 ? '日报' : commentDialogData.type === 2 ? '周报' : '月报') + '内容'">
+        <el-descriptions-item :label="(commentDialogData.type === 1 ? '日报' : commentDialogData.type === 2 ? '周报' : '月报') + '标题'"
+          >{{ commentDialogData.title }}</el-descriptions-item>
+        <el-descriptions-item :label="(commentDialogData.type === 1 ? '今日' : commentDialogData.type === 2 ? '本周' : '本月') + '工作的内容'"
+          >{{ commentDialogData.todayContent }}</el-descriptions-item>
+        <el-descriptions-item :label="(commentDialogData.type === 1 ? '明日' : commentDialogData.type === 2 ? '下周' : '下月') + '工作的内容'"
+          >{{ commentDialogData.tomorrowContent }}</el-descriptions-item>
+        <el-descriptions-item label="遇到的问题"
+          >{{ commentDialogData.question }}</el-descriptions-item>
+      </el-descriptions>
+      <div style="font-size: 16px; font-weight: 700; color: #303133; margin-top: 20px; margin-bottom: 20px;">评论区</div>
+      <el-table :data="commentDialogData.comments" style="width: 100%" empty-text="暂无评论" border>
+          
+        <el-table-column label="日期" width="135">
+          <template slot-scope="scope">
+            {{ parseTime(scope.row.time) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="名字" width="100" prop="name" />
+        <el-table-column label="内容" width="374" prop="content" />
+            
+      </el-table>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { getWorkLogList, addWorkLog, getWorlLogById, updateWorkLog } from '@/api/workLog'
+import { getWorkLogList, addWorkLog, getWorlLogById, updateWorkLog, getWorkLogWithCommentsById } from '@/api/workLog'
 import { getDeptEnableEmpListByEmpId } from '@/api/employee'
-import { CommonStatusEnum } from '@/utils/constants'
-import { COMMON_STATUS_DICT } from '@/utils/dict'
+import { WORK_LOG_TYPE_DICT } from '@/utils/dict'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -130,15 +156,17 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
+      openCommentDialog: false,
+      // 查看评论对话框数据
+      commentDialogData: {},
       // 日期范围
       dateRange: [],
       // 查询参数
       queryParams: {
         pageNo: 1,
         pageSize: 10,
-        name: undefined,
-        code: undefined,
-        status: undefined
+        type: undefined,
+        title: undefined
       },
       // 表单参数
       form: {},
@@ -150,11 +178,8 @@ export default {
       },
       // 通知人下拉选项
       sameDeptEmpOptions: {},
-
-      // 数据字典
-      CommonStatusDict: COMMON_STATUS_DICT,
-      // 枚举
-      CommonStatusEnum: CommonStatusEnum
+      // 字典数据
+      WorkLogTypeDict: WORK_LOG_TYPE_DICT
     }
   },
   created() {
@@ -164,6 +189,10 @@ export default {
     ...mapGetters(['accountId'])
   },
   methods: {
+    // 将后端传来的数组转化为string
+    formatArrayToString(row, column, cellValue, index) {
+      return cellValue.toString()
+    },
     // 查询日志列表
     getList() {
       this.loading = true
@@ -182,16 +211,6 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
-      this.reset()
-    },
-    // 取消按钮（数据权限）
-    cancelDataScope() {
-      this.openDataScope = false
-      this.reset()
-    },
-    // 取消按钮（菜单权限）
-    cancelMenu() {
-      this.openMenu = false
       this.reset()
     },
     // 表单重置
@@ -264,7 +283,29 @@ export default {
           }
         }
       })
+    },
+    // 点击评论按钮
+    handleCheckComment(row) {
+      this.commentDialogData = {}
+      getWorkLogWithCommentsById(row.id).then(response => {
+        if (!response.data) {
+          return this.$modal.msgWarning('当前无评论')
+        }
+        this.commentDialogData = response.data
+        this.openCommentDialog = true
+      })
     }
   }
 }
 </script>
+
+<style scoped>
+.item /deep/ sup {
+  top: 5px;
+  font-size: 3px;
+}
+.item /deep/ .el-badge__content {
+  height: 14px;
+  line-height: 11px;
+}
+</style>

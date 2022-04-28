@@ -49,3 +49,20 @@ export function getReceiveWorkLogList(params) {
     params
   })
 }
+
+// 已读或评论收到的日志
+export function readOrCommentReceiveLog(data) {
+  return request({
+    url: baseUrl + '/receive',
+    method: 'put',
+    data
+  })
+}
+
+// 获取日志详情及其评论列表
+export function getWorkLogWithCommentsById(id) {
+  return request({
+    url: baseUrl + '/workLogWithComments/' + id,
+    method: 'get'
+  })
+}

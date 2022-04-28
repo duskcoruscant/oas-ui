@@ -93,3 +93,17 @@ export const CONFERENCE_PROCESS_STATUS_DICT = [{
   value: 3,
   label: '已结束'
 }]
+
+/**
+ * 日志类型字典
+ */
+export const WORK_LOG_TYPE_DICT = [{
+  value: 1,
+  label: '日报'
+}, {
+  value: 2,
+  label: '周报'
+}, {
+  value: 3,
+  label: '月报'
+}]
