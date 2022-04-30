@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // 下一跳不是登陆页
       // VUEX被清除，没有角色名
-      if (store.getters.roleName === null) {
+      if (Array.prototype.isPrototypeOf(store.getters.roleNames) && store.getters.roleNames.length === 0) {
         // 重新获取用户信息
         store.dispatch('Detail').then(response => {
           // 生成路由

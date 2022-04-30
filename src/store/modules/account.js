@@ -9,7 +9,7 @@ const account = {
     nickname: null,
     loginTime: -1,
     registerTime: -1,
-    roleName: null,
+    roleNames: [],
     permissionCodeList: []
   },
 
@@ -23,7 +23,7 @@ const account = {
       state.nickname = account.nickname
       state.loginTime = account.loginTime
       state.registerTime = account.registerTime
-      state.roleName = account.roleName
+      state.roleNames = account.roleName
       state.permissionCodeList = account.permissionCodeList
     },
     RESET_ACCOUNT: (state) => {
@@ -33,7 +33,7 @@ const account = {
       state.nickname = null
       state.loginTime = -1
       state.registerTime = -1
-      state.roleName = null
+      state.roleNames = []
       state.permissionCodeList = []
     }
   },
@@ -61,6 +61,10 @@ const account = {
     Detail({ commit }) {
       return new Promise((resolve, reject) => {
         detail().then(response => {
+          // 取出角色名称组成新的数组
+          response.data.roleNames = response.data.roles.map((item, index) => {
+            return item.roleName
+          })
           // 储存用户信息
           commit('SET_ACCOUNT', response.data)
           resolve(response)

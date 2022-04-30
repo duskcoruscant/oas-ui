@@ -7,7 +7,7 @@ const getters = {
   nickname: state => state.account.nickname,
   loginTime: state => state.account.loginTime,
   registerTime: state => state.account.registerTime,
-  roleName: state => state.account.roleName,
+  roleNames: state => state.account.roleNames,
   permissionCodeList: state => state.account.permissionCodeList,
 
   permissionRouters: state => state.permission.routers,
