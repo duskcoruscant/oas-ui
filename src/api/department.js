@@ -47,3 +47,11 @@ export default {
     })
   }
 }
+
+// 查询部门下拉树结构
+export function treeselect() {
+  return request({
+    url: '/department/treeselect',
+    method: 'get'
+  })
+}

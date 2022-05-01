@@ -36,7 +36,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  mode: 'history', // 后端支持可开 // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
@@ -191,6 +191,62 @@ export const asyncRouterMap = [
       name: '收文管理',
       icon: 'el-icon-files',
       component: _import('hwenbin/missive/receive')
+    }]
+  },
+
+  {
+    path: '/workflow',
+    component: Layout,
+    redirect: '/workflow/category',
+    icon: 'skill',
+    name: '流程管理',
+    meta: { permission: ['manage'] },
+    children: [
+      {
+        path: 'category',
+        name: '流程分类',
+        icon: 'nested',
+        component: _import('hwenbin/workflow/category/index')
+      },
+      {
+        path: 'form',
+        name: '表单配置',
+        icon: 'form',
+        component: _import('hwenbin/workflow/form/index')
+      },
+      {
+        path: 'definition',
+        name: '流程定义',
+        icon: 'example',
+        component: _import('hwenbin/workflow/definition/index')
+      }
+    ]
+  },
+
+  {
+    path: '/tool',
+    component: Layout,
+    redirect: '/tool/build/index',
+    hidden: true,
+    noDropDown: true,
+    children: [{
+      path: 'build/index',
+      name: '表单配置',
+      component: _import('tool/build/index'),
+      meta: { title: '表单配置', noCache: true }
+    }]
+  },
+
+  {
+    path: '/definition',
+    component: Layout,
+    redirect: '/definition/designer',
+    hidden: true,
+    noDropDown: true,
+    children: [{
+      path: 'designer',
+      name: '流程设计',
+      component: _import('hwenbin/workflow/definition/designer')
     }]
   },
 

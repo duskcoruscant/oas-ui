@@ -60,3 +60,77 @@ export function nowDifference(unixTimeEnd) {
     return null
   }
 }
+
+/**
+ * This is just a simple version of deep copy
+ * Has a lot of edge cases bug
+ * If you want to use a perfect deep copy, use lodash's _.cloneDeep
+ * @param {Object} source
+ * @returns {Object}
+ */
+export function deepClone(source) {
+  if (!source && typeof source !== 'object') {
+    throw new Error('error arguments', 'deepClone')
+  }
+  const targetObj = source.constructor === Array ? [] : {}
+  Object.keys(source).forEach(keys => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = deepClone(source[keys])
+    } else {
+      targetObj[keys] = source[keys]
+    }
+  })
+  return targetObj
+}
+
+export function isNumberStr(str) {
+  return /^[+-]?(0|([1-9]\d*))(\.\d+)?$/g.test(str)
+}
+
+export const exportDefault = 'export default '
+
+export const beautifierConf = {
+  html: {
+    indent_size: '2',
+    indent_char: ' ',
+    max_preserve_newlines: '-1',
+    preserve_newlines: false,
+    keep_array_indentation: false,
+    break_chained_methods: false,
+    indent_scripts: 'separate',
+    brace_style: 'end-expand',
+    space_before_conditional: true,
+    unescape_strings: false,
+    jslint_happy: false,
+    end_with_newline: true,
+    wrap_line_length: '110',
+    indent_inner_html: true,
+    comma_first: false,
+    e4x: true,
+    indent_empty_lines: true
+  },
+  js: {
+    indent_size: '2',
+    indent_char: ' ',
+    max_preserve_newlines: '-1',
+    preserve_newlines: false,
+    keep_array_indentation: false,
+    break_chained_methods: false,
+    indent_scripts: 'normal',
+    brace_style: 'end-expand',
+    space_before_conditional: true,
+    unescape_strings: false,
+    jslint_happy: true,
+    end_with_newline: true,
+    wrap_line_length: '110',
+    indent_inner_html: true,
+    comma_first: false,
+    e4x: true,
+    indent_empty_lines: true
+  }
+}
+
+// 首字母大小
+export function titleCase(str) {
+  return str.replace(/( |^)[a-z]/g, L => L.toUpperCase())
+}
