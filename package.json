@@ -65,9 +65,9 @@
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
     "friendly-errors-webpack-plugin": "^1.6.1",
+    "highlight.js": "^10.5.0",
     "html-webpack-plugin": "^2.30.1",
     "http-proxy-middleware": "^0.18.0",
-    "highlight.js": "^10.5.0",
     "jest": "^22.0.4",
     "jest-serializer-vue": "^0.3.0",
     "jquery": "^3.3.1",
@@ -102,12 +102,12 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "vuedraggable": "^2.24.3",
-    "xml-js": "^1.6.11",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-hot-middleware": "^2.22.2",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "xml-js": "^1.6.11"
   },
   "engines": {
     "node": ">= 6.0.0",

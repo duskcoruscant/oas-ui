@@ -224,6 +224,23 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/task',
+    component: Layout,
+    redirect: '/task/start',
+    icon: 'job',
+    name: '办公管理',
+    meta: { permission: ['manage'] },
+    children: [
+      {
+        path: 'start',
+        name: '新建流程',
+        icon: 'guide',
+        component: _import('hwenbin/workflow/work/index')
+      }
+    ]
+  },
+
+  {
     path: '/tool',
     component: Layout,
     redirect: '/tool/build/index',
@@ -247,6 +264,18 @@ export const asyncRouterMap = [
       path: 'designer',
       name: '流程设计',
       component: _import('hwenbin/workflow/definition/designer')
+    }]
+  },
+
+  {
+    path: '/work',
+    component: Layout,
+    redirect: 'work/start',
+    hidden: true,
+    children: [{
+      path: 'start',
+      name: '发起流程',
+      component: _import('hwenbin/workflow/work/start')
     }]
   },
 
