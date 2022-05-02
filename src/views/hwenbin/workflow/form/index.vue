@@ -127,7 +127,8 @@
 // eslint-disable-next-line no-unused-vars
 import { listForm, getForm, delForm, addForm, updateForm, exportForm } from '@/api/workflow/form'
 import Editor from '@/components/Editor'
-import Parser from '@/utils/generator/parser'
+// import Parser from '@/utils/generator/parser' // 表单无法编辑
+import Parser from 'form-gen-parser'
 export default {
   name: 'Form',
   components: {

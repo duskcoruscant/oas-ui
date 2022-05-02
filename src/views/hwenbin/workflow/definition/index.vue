@@ -307,7 +307,8 @@
 import { listDefinition, publishList, updateState, delDeployment, exportDeployment, definitionStart, readXml } from '@/api/workflow/definition'
 import { getForm, addDeployForm, listForm } from '@/api/workflow/form'
 import { listCategory } from '@/api/workflow/category'
-import Parser from '@/utils/generator/parser'
+// import Parser from '@/utils/generator/parser' // 表单无法编辑
+import Parser from 'form-gen-parser'
 import ProcessViewer from '@/components/ProcessViewer'
 import { getToken } from '@/utils/token'
 

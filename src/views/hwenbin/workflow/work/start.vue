@@ -17,7 +17,8 @@
 <script>
 import { getFormByDeployId } from '@/api/workflow/deploy'
 import { startProcess } from '@/api/workflow/process'
-import Parser from '@/utils/generator/parser'
+// import Parser from '@/utils/generator/parser' // 表单无法编辑
+import Parser from 'form-gen-parser'
 
 export default {
   name: 'Start',
