@@ -200,8 +200,12 @@ export default {
       this.elExtensionElements =
         this.bpmnELement.businessObject.get('extensionElements') || window.bpmnInstances.moddle.create('bpmn:ExtensionElements', { values: [] })
       // 获取元素表单配置 或者 创建新的表单配置
+      // this.formData =
+      //   this.elExtensionElements.values.filter(ex => ex.$type === `${this.prefix}:FormData`)?.[0] ||
+      //   window.bpmnInstances.moddle.create(`${this.prefix}:FormData`, { fields: [] })
+      const temp = this.elExtensionElements.values.filter(ex => ex.$type === `${this.prefix}:FormData`)
       this.formData =
-        this.elExtensionElements.values.filter(ex => ex.$type === `${this.prefix}:FormData`)?.[0] ||
+        temp && temp[0] ||
         window.bpmnInstances.moddle.create(`${this.prefix}:FormData`, { fields: [] })
 
       // 业务标识 businessKey， 绑定在 formData 中
