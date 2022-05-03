@@ -306,7 +306,7 @@
 <script>
 import { listDefinition, publishList, updateState, delDeployment, exportDeployment, definitionStart, readXml } from '@/api/workflow/definition'
 import { getForm, addDeployForm, listForm } from '@/api/workflow/form'
-import { listCategory } from '@/api/workflow/category'
+import { listAllCategory } from '@/api/workflow/category'
 // import Parser from '@/utils/generator/parser' // 表单无法编辑
 import Parser from 'form-gen-parser'
 import ProcessViewer from '@/components/ProcessViewer'
@@ -426,8 +426,8 @@ export default {
   methods: {
     /** 查询流程分类列表 */
     getCategoryList() {
-      listCategory().then(response => {
-        this.categoryOptions = response.data.list
+      listAllCategory().then(response => {
+        this.categoryOptions = response.data
       })
     },
     /** 查询流程定义列表 */

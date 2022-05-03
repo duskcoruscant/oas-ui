@@ -70,12 +70,13 @@ export default {
     },
     submit(data) {
       if (data) {
-        const variables = data.valData
-        const formData = data.formData
+        const variables = this.$refs.parser.formData
+        const formData = this.$refs.parser.formConfCopy
         formData.disabled = true
         formData.formBtns = false
         if (this.definitionId) {
           variables.variables = formData
+          console.log('好了吗这里 xxxxxxx variables = ', variables)
           // 启动流程并将表单数据加入流程变量
           startProcess(this.definitionId, JSON.stringify(variables)).then(res => {
             this.$modal.msgSuccess(res.data)

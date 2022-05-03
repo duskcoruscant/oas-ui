@@ -236,6 +236,24 @@ export const asyncRouterMap = [
         name: '新建流程',
         icon: 'guide',
         component: _import('hwenbin/workflow/work/index')
+      },
+      {
+        path: 'process',
+        name: '我的流程',
+        icon: 'cascader',
+        component: _import('hwenbin/workflow/work/own')
+      },
+      {
+        path: 'todo',
+        name: '待办任务',
+        icon: 'time-range',
+        component: _import('hwenbin/workflow/work/todo')
+      },
+      {
+        path: 'finished',
+        name: '已办任务',
+        icon: 'checkbox',
+        component: _import('hwenbin/workflow/work/finished')
       }
     ]
   },
@@ -276,6 +294,14 @@ export const asyncRouterMap = [
       path: 'start',
       name: '发起流程',
       component: _import('hwenbin/workflow/work/start')
+    }, {
+      path: 'own',
+      name: '我的流程',
+      component: _import('hwenbin/workflow/work/own')
+    }, {
+      path: 'detail',
+      name: '流程详情',
+      component: _import('hwenbin/workflow/work/detail')
     }]
   },
 

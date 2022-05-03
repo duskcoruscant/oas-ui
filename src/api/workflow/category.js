@@ -15,6 +15,14 @@ export function listCategory(query) {
   })
 }
 
+// 获取所有流程分类，不分页
+export function listAllCategory() {
+  return request({
+    url: baseUrl + '/listAll',
+    method: 'get'
+  })
+}
+
 // 查询流程分类详细
 export function getCategory(categoryId) {
   return request({
