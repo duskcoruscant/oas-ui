@@ -57,7 +57,11 @@
           <el-tag size="medium" >v{{ scope.row.procDefVersion }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="提交时间" align="center" prop="createTime" width="180"/>
+      <el-table-column label="提交时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          {{parseTime(scope.row.createTime)}}
+        </template>
+      </el-table-column>
       <el-table-column label="流程状态" align="center" width="100">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.finishTime == null" size="mini">进行中</el-tag>

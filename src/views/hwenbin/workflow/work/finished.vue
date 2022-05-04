@@ -48,8 +48,16 @@
           <label>{{scope.row.startUserName}} <el-tag type="info" size="mini">{{scope.row.startDeptName}}</el-tag></label>
         </template>
       </el-table-column>
-      <el-table-column label="接收时间" align="center" prop="createTime" width="180"/>
-      <el-table-column label="审批时间" align="center" prop="finishTime" width="180"/>
+      <el-table-column label="接收时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          {{parseTime(scope.row.createTime)}}
+        </template>
+      </el-table-column>
+      <el-table-column label="审批时间" align="center" prop="finishTime" width="180">
+        <template slot-scope="scope">
+          {{parseTime(scope.row.finishTime)}}
+        </template>
+      </el-table-column>
       <el-table-column label="耗时" align="center" prop="duration" width="180"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

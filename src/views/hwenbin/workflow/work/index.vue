@@ -48,7 +48,11 @@
           <el-tag type="warning" v-if="scope.row.suspended">挂起</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="部署时间" align="center" prop="deploymentTime" width="180"/>
+      <el-table-column label="部署时间" align="center" prop="deploymentTime" width="180">
+        <template slot-scope="scope">
+          {{parseTime(scope.row.deploymentTime)}}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
