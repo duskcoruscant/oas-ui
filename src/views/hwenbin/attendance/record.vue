@@ -99,7 +99,7 @@ export default {
     verifyDateRange(date) {
       return date.getMonth() === this.showMonth && date < this.currentDateTailTime &&
         // 入职日期开始
-        date >= this.entryDate &&
+        date >= (this.entryDate || 0) &&
         // 且为工作日
         date.getDay() !== 6 && date.getDay() !== 0
     },
