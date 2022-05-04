@@ -35,7 +35,13 @@
                     </el-icon>
                     <span style="color: #F56C6C">{{ date.getMonth() == currentMonth && date.getDate() == currentDay ? '今日未考勤' : '缺勤' }}</span>
                 </template>
-            </div>
+              </div>
+              <div v-else-if="isNoneEntry(date)">
+                <span class="noneEntry">未入职</span>
+              </div>
+              <div v-else-if="isWeekend(date)">
+                <span class="rest">休</span>
+              </div>
         </template>
     </el-calendar>
 </template>
@@ -54,6 +60,7 @@ export default {
       showMonth: new Date().getMonth(),
       currentDay: new Date().getDate(),
       currentDateTailTime: new Date().setHours(23),
+      entryDate: undefined,
       attendances: []
     }
   },
@@ -77,6 +84,7 @@ export default {
       const month = currentMonth.getMonth() + 1
       getAttListByMonthOrDate({ empId: this.accountId, year, month }).then(result => {
         this.attendances = result.data
+        this.entryDate = result.data && result.data[0] && result.data[0].entryDate || this.entryDate
       })
     },
     hasAttendance(data) {
@@ -89,7 +97,20 @@ export default {
       return false
     },
     verifyDateRange(date) {
-      return date.getMonth() === this.showMonth && date < this.currentDateTailTime
+      return date.getMonth() === this.showMonth && date < this.currentDateTailTime &&
+        // 入职日期开始
+        date >= this.entryDate &&
+        // 且为工作日
+        date.getDay() !== 6 && date.getDay() !== 0
+    },
+    // 非工作日
+    isWeekend(date) {
+      // 周六日为非工作日
+      return date.getMonth() === this.showMonth && (date.getDay() === 6 || date.getDay() === 0)
+    },
+    // 是否未入职
+    isNoneEntry(date) {
+      return date.getMonth() === this.showMonth && date < this.entryDate
     },
     isAbnormalAttendance(data) {
       return !data.attendance.clockOutTime ||
@@ -115,5 +136,29 @@ export default {
 .clock-description {
     font-size: 14px;
     margin-top: 20px;
+}
+.rest {
+  color: #fff;
+  border-radius: 50%;
+  background: rgb(250, 124, 77);
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  display: inline-block;
+  font-size: 12px;
+  margin-left: 10px;
+  text-align: center;
+}
+.noneEntry {
+  color: #fff;
+  border-radius: 50%;
+  background: rgba(168, 158, 158, 0.767);
+  width: 50px;
+  height: 20px;
+  line-height: 20px;
+  display: inline-block;
+  font-size: 12px;
+  margin-left: 10px;
+  text-align: center;
 }
 </style>
