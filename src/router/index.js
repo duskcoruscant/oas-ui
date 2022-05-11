@@ -129,16 +129,16 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/workLog/send',
     icon: 'config',
-    name: '工作日志',
+    name: '工作文档',
     meta: { permission: ['manage'] },
     children: [{
       path: 'send',
-      name: '我发出的',
+      name: '我的文档',
       icon: 'el-icon-files',
       component: _import('hwenbin/worklog/send')
     }, {
       path: 'receive',
-      name: '我收到的',
+      name: '评阅文档',
       icon: 'el-icon-files',
       component: _import('hwenbin/worklog/receive')
     }]
