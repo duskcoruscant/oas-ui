@@ -482,7 +482,7 @@ export default {
       this.$refs['taskForm'].validate(valid => {
         if (valid) {
           rejectTask(this.taskForm).then(res => {
-            this.$modal.msgSuccess(res.data)
+            this.$modal.msgSuccess(res.message)
             this.goBack()
           })
         }
@@ -546,7 +546,7 @@ export default {
       }
       this.taskForm.userId = this.currentUserId
       delegate(this.taskForm).then(res => {
-        this.$modal.msgSuccess(res.data)
+        this.$modal.msgSuccess(res.message)
         this.goBack()
       })
     },
@@ -586,7 +586,7 @@ export default {
             this.$modal.msgError('请选择退回节点！')
           }
           returnTask(this.taskForm).then(res => {
-            this.$modal.msgSuccess(res.data)
+            this.$modal.msgSuccess(res.message)
             this.goBack()
           })
         }
