@@ -138,12 +138,12 @@
           <el-table ref="userTable" height="500" :data="userList" highlight-current-row @current-change="changeCurrentUser">
             <el-table-column width="30">
               <template slot-scope="scope">
-                <el-radio :label="scope.row.userId" v-model="currentUserId">{{''}}</el-radio>
+                <el-radio :label="scope.row.id" v-model="currentUserId">{{''}}</el-radio>
               </template>
             </el-table-column>
-            <el-table-column label="用户名" align="center" prop="nickName" />
-            <el-table-column label="手机" align="center" prop="phonenumber" />
-            <el-table-column label="部门" align="center" prop="dept.deptName" />
+            <el-table-column label="用户名" align="center" prop="name" />
+            <el-table-column label="手机" align="center" prop="phone" />
+            <el-table-column label="部门" align="center" prop="deptName" />
           </el-table>
           <pagination
             :total="total"
@@ -359,7 +359,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.userData = selection
-      const val = selection.map(item => item.userId)[0]
+      const val = selection.map(item => item.id)[0]
       if (val instanceof Array) {
         this.taskForm.values = {
           'approval': val.join(',')
@@ -451,7 +451,7 @@ export default {
       this.$refs['taskForm'].validate(valid => {
         if (valid) {
           complete(this.taskForm).then(response => {
-            this.$modal.msgSuccess(response.data)
+            this.$modal.msgSuccess(response.message)
             this.goBack()
           })
         }
@@ -489,7 +489,7 @@ export default {
       })
     },
     changeCurrentUser(val) {
-      this.currentUserId = val.userId
+      this.currentUserId = val.id
     },
     /** 返回页面 */
     goBack() {
