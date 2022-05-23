@@ -4,13 +4,24 @@
     <div class="current-date">{{ currentDate }}</div>
     <div class="clock-button">
       <el-button-group>
-        <el-button :disabled="Boolean(attendance)" size="large" type="primary" @click="clockIn">
-          签到
-        </el-button>
-        <el-button :disabled="Boolean(!attendance) || Boolean(attendance.clockOutTime)" size="large" type="primary"
-          @click="clockOut">
-          签退
-        </el-button>
+        <el-tooltip class="item" effect="light" :content="Boolean(attendance) ? '今日已签到' : '点击签到'" placement="left-start">
+          <!-- 在el-button的外层，再加上一个div包裹起来，这样的话，类名el-tooltip就会加到div身上，就不会受到按钮禁用的影响了 -->
+          <div style="display: inline-block;">
+            <el-button :disabled="Boolean(attendance)" size="large" type="primary" @click="clockIn">
+              签到
+            </el-button>
+          </div>
+        </el-tooltip>
+        <el-tooltip class="item" effect="light" 
+                    :content="Boolean(!attendance) ? '今日尚未签到，无法签退' : Boolean(attendance.clockOutTime) ? '今日已签退' : '点击签退'" 
+                    placement="right-start">
+          <div style="display: inline-block;">
+            <el-button :disabled="Boolean(!attendance) || Boolean(attendance.clockOutTime)" size="large" type="primary"
+              @click="clockOut">
+              签退
+            </el-button>
+          </div>
+        </el-tooltip>
       </el-button-group>
     </div>
   </div>
