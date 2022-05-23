@@ -57,3 +57,20 @@ export function removeFileToRecycleBin(fileId, operatorId) {
     method: 'delete'
   })
 }
+
+// 获取共享文件夹列表
+export function listAllShareFolder() {
+  return request({
+    url: baseUrl + '/listAllShareFolder',
+    method: 'get'
+  })
+}
+
+// 选择个人文件共享至指定共享文件夹中
+export function shareFileTo(data) {
+  return request({
+    url: baseUrl + '/shareFileTo',
+    method: 'post',
+    data
+  })
+}

@@ -87,7 +87,7 @@
                     size="mini" type="text" icon="el-icon-edit-outline">重命名</el-dropdown-item>
                   <el-dropdown-item command="handleDelete"
                     size="mini" type="text" icon="el-icon-delete">删除</el-dropdown-item>
-                  <el-dropdown-item command="handleRole" v-if="scope.row.type !== '文件夹'"
+                  <el-dropdown-item command="handleShare" v-if="scope.row.type !== '文件夹'"
                     size="mini" type="text" icon="el-icon-share">文件共享</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -102,14 +102,20 @@
     <!-- 新建文件夹 或者重命名 对话框 -->
     <el-dialog :title="form.title" :visible.sync="open" :close-on-click-modal="false" width="550px" @close="handleDialogClose">
       <el-form class="add-folder-form" :model="form" :rules="formRules" ref="addOrRenameFileForm" label-width="100px" label-position="top">
-        <el-form-item :label="form.label" prop="filename">
+        <el-form-item v-if="form.isShare === false" :label="form.label" prop="filename">
           <el-input v-model="form.filename" :placeholder="form.placeholder" type="textarea" autosize maxlength="255" show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item v-else label="文件共享至" prop="mountFolderId">
+          <treeselect v-model="form.mountFolderId" :options="shareFolderOptions" :show-count="true"
+                      placeholder="请选择挂载位置" :normalizer="normalizer" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleDialogClose">取 消</el-button>
         <el-button type="primary" :loading="sureBtnLoading" @click="handleFolderDialogSure"
           v-if="form.title === '新建文件夹'">确 定</el-button>
+        <el-button type="primary" :loading="sureBtnLoading" @click="handleShareDialogSure"
+          v-else-if="form.isShare === true">确定</el-button>
         <el-button type="primary" :loading="sureBtnLoading" @click="handleRenameDialogSure"
           v-else>确 定</el-button>
       </div>
@@ -137,12 +143,15 @@
 <script>
 
 import { mapGetters } from 'vuex'
-import { getFileList, createFolder, renameFile, downloadFile, uploadFiles, removeFileToRecycleBin } from '@/api/file'
+import { getFileList, createFolder, renameFile, downloadFile, uploadFiles, removeFileToRecycleBin, listAllShareFolder, shareFileTo } from '@/api/file'
 import { isValidatefilename } from '@/utils/validate'
+
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   name: 'PersonalFile',
-  components: {},
+  components: { Treeselect },
   data() {
     const validatefilename = (rule, value, callback) => {
       if (isValidatefilename(value)) {
@@ -169,6 +178,8 @@ export default {
       dateRange: [],
       // 表单参数
       form: {},
+      // 共享文件夹下拉树选项
+      shareFolderOptions: undefined,
       // 路径信息
       paths: [{ id: 0, name: '根目录' }],
       // 上传文件参数
@@ -198,6 +209,9 @@ export default {
         filename: [
           { required: true, message: '文件夹名称不能为空', trigger: 'blur' },
           { validator: validatefilename, trigger: ['blur', 'change'] }
+        ],
+        mountFolderId: [
+          { required: true, message: '文件挂载位置不能为空', trigger: 'blur' }
         ]
       }
     }
@@ -253,12 +267,9 @@ export default {
         case 'handleDelete':
           this.handleDelete(row)
           break
-        // case 'handleResetPwd':
-        //   this.handleResetPwd(row)
-        //   break
-        // case 'handleRole':
-        //   this.handleRole(row)
-        //   break
+        case 'handleShare':
+          this.handleShare(row)
+          break
         default:
           break
       }
@@ -271,6 +282,8 @@ export default {
     // 表单重置
     reset() {
       this.form = {
+        isShare: false,
+        mountFolderId: undefined,
         filename: undefined,
         title: '新建文件夹',
         label: '文件夹名称',
@@ -303,6 +316,59 @@ export default {
       this.form.fileId = row.id
       this.form.filename = row.name
       this.open = true
+    },
+    // 格式化共享文件夹下拉框
+    normalizer(node) {
+      return {
+        id: node.id,
+        label: node.name,
+        children: node.children
+      }
+    },
+    // 获取共享文件夹下拉树
+    getTreeselect() {
+      listAllShareFolder().then(response => {
+        this.shareFolderOptions = []
+        this.shareFolderOptions.push({
+          id: 0,
+          name: '共享根目录',
+          children: this.handleTree(response.data, 'id')
+        })
+      })
+    },
+    // 文件共享按钮操作
+    handleShare(row) {
+      this.reset()
+      this.getTreeselect()
+      this.form.isShare = true
+      this.form.title = '文件共享'
+      this.form.fileId = row.id
+      this.form.filename = row.name
+      this.open = true
+    },
+    // 文件共享 对话框 —— 确认按钮
+    handleShareDialogSure() {
+      this.sureBtnLoading = true
+      this.$refs['addOrRenameFileForm'].validate((valid) => {
+        if (valid) {
+          shareFileTo({
+            fileId: this.form.fileId,
+            mountFolderId: this.form.mountFolderId
+          }).then(res => {
+            this.sureBtnLoading = false
+            this.$modal.msgSuccess('文件共享操作成功')
+            this.$refs['addOrRenameFileForm'].resetFields()
+            this.open = false
+            this.handleQuery()
+          }).catch(res => {
+            this.sureBtnLoading = false
+            this.$modal.msgError('文件共享操作失败')
+          })
+        } else {
+          this.sureBtnLoading = false
+          return false
+        }
+      })
     },
     // 创建文件夹 对话框 —— 确认按钮
     handleFolderDialogSure() {
