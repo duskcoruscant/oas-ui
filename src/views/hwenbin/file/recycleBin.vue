@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-alert title="回收站中的文件仅保留七天，到期将自动删除，无法进行恢复" type="success" center show-icon style="margin-bottom: 10px;" />
     <el-row :gutter="20">
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
