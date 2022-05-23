@@ -179,8 +179,11 @@ export default {
         return
       }
       this.reset()
-      this.form = this.resRoomInfo
       this.form.resEmpId = this.accountId
+      this.form.roomCode = this.resRoomInfo.roomCode
+      this.form.date = this.resRoomInfo.date
+      this.form.startTime = this.resRoomInfo.startTime
+      this.form.endTime = this.resRoomInfo.endTime
       this.open = true
     },
     submitForm() {
