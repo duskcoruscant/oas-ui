@@ -300,10 +300,16 @@
       },
       // 修改会议室列表的数据格式
       handleRoomLst() {
+        const curDate = moment().format('YYYY/MM/DD')
+        const curTime = moment().format('HH:mm')
+        const activeDate = this.dateLst.find(date => date.active).date
+        const curTimeArr = curTime.split(':')
+        const alreadyPastTimeEndIndex = this.getIndexFromTime(curTimeArr[1] >= '30' ? curTimeArr[0] + ':30' : curTimeArr[0] + ':00', 1)
         this.roomLst.forEach((room, index) => {
           const gridLst = []
           for (let i = 0; i < 48; i++) {
             gridLst.push({
+              // 0空闲
               status: 0
             })
           }
@@ -317,9 +323,16 @@
             const startIndex = this.getIndexFromTime(startTime, 0)
             const endIndex = this.getIndexFromTime(endTime, 1)
             for (let i = startIndex; i <= endIndex; i++) {
+              // 1被占用
               room.gridLst[i].status = 1
             }
           })
+          // 将当天当前时间之前的时间段设置为占用
+          if (activeDate === curDate) {
+            for (let i = 0; i <= alreadyPastTimeEndIndex; i++) {
+              room.gridLst[i].status = 1
+            }
+          }
         })
       },
       getIndexFromTime(time, type) {
@@ -330,6 +343,7 @@
         } else {
           minuteTime = time.split(':')[1] === '30' ? 0 : 1
         }
+        // type为0表示time为起始时间，index需要加1；为1表示time为结束时间，index需要减1
         const index = type === 0 ? 2 * hourTime + minuteTime : 2 * hourTime - minuteTime
         return index
       },
