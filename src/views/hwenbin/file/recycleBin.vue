@@ -18,10 +18,12 @@
           <el-table-column align="right" width="45">
             <template slot-scope="scope">
               <span v-if="scope.row.type === '文件夹'" class="folder-icon">
-                <i class="el-icon-folder"></i>
+                <!-- <i class="el-icon-folder"></i> -->
+                <icon-svg icon-class='文件夹' />
               </span>
               <span v-else class="file-icon">
-                <i class="el-icon-document"></i>
+                <!-- <i class="el-icon-document"></i> -->
+                <icon-svg :icon-class="scope.row.type" />
               </span>
             </template>
           </el-table-column>
@@ -181,14 +183,10 @@ export default {
   margin-left: 10px;
 }
 .folder-icon {
-    font-size: 16px;
-    color: #E6A23C;
-    margin-right: 5px;
+    font-size: 22px;
 }
 
 .file-icon {
-    font-size: 16px;
-    color: #409EFF;
-    margin-right: 5px;
+    font-size: 22px;
 }
 </style>
