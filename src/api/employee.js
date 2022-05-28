@@ -57,6 +57,23 @@ export default {
       method: 'put',
       data: data
     })
+  },
+  // 导出员工
+  exportUser(query) {
+    return request({
+      url: '/employee/export',
+      method: 'get',
+      params: query,
+      responseType: 'blob'
+    })
+  },
+  // 下载用户导入模板
+  importTemplate() {
+    return request({
+      url: '/employee/getImportTemplate',
+      method: 'get',
+      responseType: 'blob'
+    })
   }
 }
 

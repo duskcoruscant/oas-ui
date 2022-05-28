@@ -81,4 +81,10 @@ service.interceptors.response.use(
   }
 )
 
+export function getBaseHeader() {
+  return {
+    'Authorization': getToken()
+  }
+}
+
 export default service

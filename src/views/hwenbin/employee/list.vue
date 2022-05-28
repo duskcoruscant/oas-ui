@@ -201,7 +201,7 @@
       </div>
     </el-dialog>
 
-    <!-- 用户导入对话框 -->
+    <!-- 员工导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
       <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
         :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
@@ -210,7 +210,7 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
           <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的员工数据
           </div>
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">下载模板</el-link>
@@ -260,6 +260,7 @@ import deptApi from '@/api/department'
 import postApi from '@/api/position'
 import { update } from '@/api/account'
 import { getEnableRoleList, getRoleIdsByAccountId, assignAccountRole } from '@/api/role'
+import { getBaseHeader } from '@/utils/request'
 
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -314,11 +315,11 @@ export default {
         // 是否禁用上传
         isUploading: false,
         // 是否更新已经存在的用户数据
-        updateSupport: 0
-        // // 设置上传的请求头部
-        // headers: getBaseHeader(),
-        // // 上传的地址
-        // url: process.env.VUE_APP_BASE_API + '/admin-api/' + '/system/user/import'
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: getBaseHeader(),
+        // 上传的地址
+        url: process.env.BASE_API + '/employee/import'
       },
       // 查询参数
       listQuery: {
@@ -602,65 +603,67 @@ export default {
         this.$modal.msgSuccess('删除成功')
       }).catch(() => {})
     },
-    // /** 导出按钮操作 */
-    // handleExport() {
-    //   const listQuery = this.addDateRange(this.listQuery, [
-    //     this.dateRange[0] ? this.dateRange[0] + ' 00:00:00' : undefined,
-    //     this.dateRange[1] ? this.dateRange[1] + ' 23:59:59' : undefined
-    //   ])
-    //   this.$modal.confirm('是否确认导出所有用户数据项?').then(() => {
-    //     this.exportLoading = true
-    //     return exportUser(listQuery)
-    //   }).then(response => {
-    //     this.$download.excel(response, '用户数据.xls')
-    //     this.exportLoading = false
-    //   }).catch(() => {})
-    // },
-    // /** 导入按钮操作 */
-    // handleImport() {
-    //   this.upload.title = '用户导入'
-    //   this.upload.open = true
-    // },
-    // /** 下载模板操作 */
-    // importTemplate() {
-    //   importTemplate().then(response => {
-    //     this.$download.excel(response, '用户导入模板.xls')
-    //   })
-    // },
-    // // 文件上传中处理
-    // handleFileUploadProgress(event, file, fileList) {
-    //   this.upload.isUploading = true
-    // },
-    // // 文件上传成功处理
-    // handleFileSuccess(response, file, fileList) {
-    //   if (response.code !== 0) {
-    //     this.$modal.msgError(response.msg)
-    //     return
-    //   }
-    //   this.upload.open = false
-    //   this.upload.isUploading = false
-    //   this.$refs.upload.clearFiles()
-    //   // 拼接提示语
-    //   const data = response.data
-    //   let text = '创建成功数量：' + data.createUsernames.length
-    //   for (const username of data.createUsernames) {
-    //     text += '<br />&nbsp;&nbsp;&nbsp;&nbsp;' + username
-    //   }
-    //   text += '<br />更新成功数量：' + data.updateUsernames.length
-    //   for (const username of data.updateUsernames) {
-    //     text += '<br />&nbsp;&nbsp;&nbsp;&nbsp;' + username
-    //   }
-    //   text += '<br />更新失败数量：' + Object.keys(data.failureUsernames).length
-    //   for (const username in data.failureUsernames) {
-    //     text += '<br />&nbsp;&nbsp;&nbsp;&nbsp;' + username + '：' + data.failureUsernames[username]
-    //   }
-    //   this.$alert(text, '导入结果', { dangerouslyUseHTMLString: true })
-    //   this.getEmployeeList()
-    // },
-    // // 提交上传文件
-    // submitFileForm() {
-    //   this.$refs.upload.submit()
-    // },
+    /** 导出按钮操作 */
+    handleExport() {
+      const listQuery = this.addDateRange(this.listQuery, [
+        // this.dateRange[0] ? this.dateRange[0] + ' 00:00:00' : undefined,
+        // this.dateRange[1] ? this.dateRange[1] + ' 23:59:59' : undefined
+        this.dateRange[0] ? this.dateRange[0] : undefined,
+        this.dateRange[1] ? this.dateRange[1] : undefined
+      ])
+      this.$modal.confirm('是否确认导出所有员工数据项?').then(() => {
+        this.exportLoading = true
+        return empApi.exportUser(listQuery)
+      }).then(response => {
+        this.$download.excel(response.data, '员工数据.xls')
+        this.exportLoading = false
+      }).catch(() => {})
+    },
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = '员工导入'
+      this.upload.open = true
+    },
+    /** 下载模板操作 */
+    importTemplate() {
+      empApi.importTemplate().then(response => {
+        this.$download.excel(response.data, '员工导入模板.xls')
+      })
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      if (response.code !== 200) {
+        this.$modal.msgError(response.message)
+        return
+      }
+      this.upload.open = false
+      this.upload.isUploading = false
+      this.$refs.upload.clearFiles()
+      // 拼接提示语
+      const data = response.data
+      let text = '创建成功数量：' + data.createNicknames.length
+      for (const nickname of data.createNicknames) {
+        text += '<br />&nbsp;&nbsp;&nbsp;&nbsp;' + nickname
+      }
+      text += '<br />更新成功数量：' + data.updateNicknames.length
+      for (const nickname of data.updateNicknames) {
+        text += '<br />&nbsp;&nbsp;&nbsp;&nbsp;' + nickname
+      }
+      text += '<br />更新失败数量：' + Object.keys(data.failureNicknames).length
+      for (const nickname in data.failureNicknames) {
+        text += '<br />&nbsp;&nbsp;&nbsp;&nbsp;' + nickname + '：' + data.failureNicknames[nickname]
+      }
+      this.$alert(text, '导入结果', { dangerouslyUseHTMLString: true })
+      this.getEmployeeList()
+    },
+    // 提交上传文件
+    submitFileForm() {
+      this.$refs.upload.submit()
+    },
     // 格式化部门的下拉框
     normalizer(node) {
       return {
