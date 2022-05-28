@@ -28,7 +28,7 @@ export const constantRouterMap = [
     noDropDown: true,
     children: [{
       path: 'dashboard',
-      name: '控制台',
+      name: '首页',
       component: _import('dashboard/index'),
       meta: { title: 'dashboard', noCache: true }
     }]
@@ -46,14 +46,14 @@ export const asyncRouterMap = [
     path: '/manageCenter',
     component: Layout,
     redirect: '/manageCenter/employee',
-    icon: 'config',
+    icon: 'manage',
     // noDropDown: true,
     name: '管理中心',
     meta: { permission: ['manage'] },
     children: [{
       path: 'employee',
       name: '员工管理',
-      icon: 'user',
+      icon: 'emp-manage',
       component: _import('hwenbin/employee/list'),
       meta: {
         permission: ['manage:employee:list']
@@ -61,19 +61,19 @@ export const asyncRouterMap = [
     }, {
       path: 'department',
       name: '部门管理',
-      icon: 'tree',
+      icon: 'dept-manage',
       component: _import('hwenbin/department/list'),
       meta: { permission: ['manage:department:list'] }
     }, {
       path: 'position',
       name: '职位管理',
-      icon: 'post',
+      icon: 'post-manage',
       component: _import('hwenbin/position/list'),
       meta: { permission: ['manage:position:list'] }
     }, {
       path: 'role',
       name: '角色管理',
-      icon: 'peoples',
+      icon: 'role-manage',
       component: _import('hwenbin/role/list'),
       meta: { permission: ['manage:role:list'] }
     }]
@@ -83,7 +83,7 @@ export const asyncRouterMap = [
     path: '/attendanceCenter',
     component: Layout,
     redirect: '/attendanceCenter/attendance',
-    icon: 'config',
+    icon: 'time-range',
     name: '考勤中心',
     meta: { permission: ['manage'] },
     children: [{
@@ -103,7 +103,7 @@ export const asyncRouterMap = [
     path: '/fileCenter',
     component: Layout,
     redirect: '/fileCenter/personal',
-    icon: 'config',
+    icon: 'file-manage',
     name: '文件中心',
     meta: { permission: ['manage'] },
     children: [{
@@ -128,18 +128,18 @@ export const asyncRouterMap = [
     path: '/workLog',
     component: Layout,
     redirect: '/workLog/send',
-    icon: 'config',
+    icon: 'work-report',
     name: '工作文档',
     meta: { permission: ['manage'] },
     children: [{
       path: 'send',
       name: '我的文档',
-      icon: 'el-icon-files',
+      icon: 'write',
       component: _import('hwenbin/worklog/send')
     }, {
       path: 'receive',
       name: '评阅文档',
-      icon: 'el-icon-files',
+      icon: 'receive',
       component: _import('hwenbin/worklog/receive')
     }]
   },
@@ -148,28 +148,28 @@ export const asyncRouterMap = [
     path: '/conference',
     component: Layout,
     redirect: '/conference/list',
-    icon: 'config',
+    icon: 'conference',
     name: '会议中心',
     meta: { permission: ['manage'] },
     children: [{
       path: 'equipment',
       name: '设备管理',
-      icon: 'el-icon-files',
+      icon: 'equipment',
       component: _import('hwenbin/conference/conferenceEquipment')
     }, {
       path: 'room',
       name: '会议室管理',
-      icon: 'el-icon-files',
+      icon: 'room',
       component: _import('hwenbin/conference/conferenceRoom')
     }, {
       path: 'reservation',
       name: '会议预订',
-      icon: 'el-icon-files',
+      icon: 'reservation',
       component: _import('hwenbin/conference/reservation')
     }, {
       path: 'resHistory',
       name: '会议列表',
-      icon: 'el-icon-files',
+      icon: 'conference-list',
       component: _import('hwenbin/conference/resHistory')
     }]
   },
@@ -178,18 +178,18 @@ export const asyncRouterMap = [
     path: '/missive',
     component: Layout,
     redirect: '/missive/list',
-    icon: 'config',
+    icon: 'missive',
     name: '公文中心',
     meta: { permission: ['manage'] },
     children: [{
       path: 'send',
       name: '发文管理',
-      icon: 'el-icon-files',
+      icon: 'send-missive',
       component: _import('hwenbin/missive/send')
     }, {
       path: 'receive',
       name: '收文管理',
-      icon: 'el-icon-files',
+      icon: 'receive-missive',
       component: _import('hwenbin/missive/receive')
     }]
   },
@@ -309,7 +309,7 @@ export const asyncRouterMap = [
     path: '/test',
     component: Layout,
     redirect: '/test/test',
-    icon: 'config',
+    icon: 'test',
     name: '测试',
     meta: { permission: ['manage'] },
     children: [{
