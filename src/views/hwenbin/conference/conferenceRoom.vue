@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="82px">
+    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="82px"
+             v-if="hasPermission('conference:room:query')">
       <el-form-item label="会议室编号" prop="code">
         <el-input v-model="listQuery.code" placeholder="请输入会议室编号" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
@@ -18,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="handleQuery" v-if="hasPermission('conference:room:query')">搜索</el-button>
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -26,7 +27,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                   >新增</el-button>
+                   v-if="hasPermission('conference:room:add')">新增</el-button>
       </el-col>
       <!-- <el-col :span="1.5">
         <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading"
@@ -65,17 +66,17 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleAddRes(scope.row)" v-if="scope.row.status === 0"
-                    >预订会议</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleAddRes(scope.row)" 
+                    v-if="scope.row.status === 0 && hasPermission('conference:reservation')">预订会议</el-button>
           <el-dropdown @command="(command) => handleCommand(command, scope.$index, scope.row)"
                       >
             <span class="el-dropdown-link">
               <i class="el-icon-d-arrow-right el-icon--right"></i>更多
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="handleUpdate"
+              <el-dropdown-item command="handleUpdate" v-if="hasPermission('conference:room:update')"
                 size="mini" type="text" icon="el-icon-edit">修改</el-dropdown-item>
-              <el-dropdown-item command="handleDelete"
+              <el-dropdown-item command="handleDelete" v-if="hasPermission('conference:room:delete')"
                 size="mini" type="text" icon="el-icon-delete">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

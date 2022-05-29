@@ -85,7 +85,7 @@ export const asyncRouterMap = [
     redirect: '/attendanceCenter/attendance',
     icon: 'time-range',
     name: '考勤中心',
-    meta: { permission: ['manage'] },
+    meta: { },
     children: [{
       path: 'clock',
       name: '考勤',
@@ -105,22 +105,25 @@ export const asyncRouterMap = [
     redirect: '/fileCenter/personal',
     icon: 'file-manage',
     name: '文件中心',
-    meta: { permission: ['manage'] },
+    meta: { permission: ['file'] },
     children: [{
       path: 'personal',
       name: '个人文件',
       icon: 'el-icon-files',
-      component: _import('hwenbin/file/personal')
+      component: _import('hwenbin/file/personal'),
+      meta: { permission: ['file:personal:list'] }
     }, {
       path: 'share',
       name: '共享文件',
       icon: 'el-icon-share',
-      component: _import('hwenbin/file/share')
+      component: _import('hwenbin/file/share'),
+      meta: { permission: ['file:share:list'] }
     }, {
       path: 'recycleBin',
       name: '回收站',
       icon: 'el-icon-delete',
-      component: _import('hwenbin/file/recycleBin')
+      component: _import('hwenbin/file/recycleBin'),
+      meta: { permission: ['file:recycle-bin:list'] }
     }]
   },
 
@@ -130,17 +133,19 @@ export const asyncRouterMap = [
     redirect: '/workLog/send',
     icon: 'work-report',
     name: '工作文档',
-    meta: { permission: ['manage'] },
+    meta: { permission: ['work-log'] },
     children: [{
       path: 'send',
       name: '我的文档',
       icon: 'write',
-      component: _import('hwenbin/worklog/send')
+      component: _import('hwenbin/worklog/send'),
+      meta: { permission: ['work-log:send:list'] }
     }, {
       path: 'receive',
       name: '评阅文档',
       icon: 'receive',
-      component: _import('hwenbin/worklog/receive')
+      component: _import('hwenbin/worklog/receive'),
+      meta: { permission: ['work-log:receive:list'] }
     }]
   },
 
@@ -150,27 +155,31 @@ export const asyncRouterMap = [
     redirect: '/conference/list',
     icon: 'conference',
     name: '会议中心',
-    meta: { permission: ['manage'] },
+    meta: { permission: ['conference'] },
     children: [{
       path: 'equipment',
       name: '设备管理',
       icon: 'equipment',
-      component: _import('hwenbin/conference/conferenceEquipment')
+      component: _import('hwenbin/conference/conferenceEquipment'),
+      meta: { permission: ['conference:equipment:list'] }
     }, {
       path: 'room',
       name: '会议室管理',
       icon: 'room',
-      component: _import('hwenbin/conference/conferenceRoom')
+      component: _import('hwenbin/conference/conferenceRoom'),
+      meta: { permission: ['conference:room:list'] }
     }, {
       path: 'reservation',
       name: '会议预订',
       icon: 'reservation',
-      component: _import('hwenbin/conference/reservation')
+      component: _import('hwenbin/conference/reservation'),
+      meta: { permission: ['conference:reservation'] }
     }, {
       path: 'resHistory',
       name: '会议列表',
       icon: 'conference-list',
-      component: _import('hwenbin/conference/resHistory')
+      component: _import('hwenbin/conference/resHistory'),
+      meta: { permission: ['conference:list:list'] }
     }]
   },
 
@@ -180,17 +189,19 @@ export const asyncRouterMap = [
     redirect: '/missive/list',
     icon: 'missive',
     name: '公文中心',
-    meta: { permission: ['manage'] },
+    meta: { permission: ['missive'] },
     children: [{
       path: 'send',
       name: '发文管理',
       icon: 'send-missive',
-      component: _import('hwenbin/missive/send')
+      component: _import('hwenbin/missive/send'),
+      meta: { permission: ['missive:send'] }
     }, {
       path: 'receive',
       name: '收文管理',
       icon: 'receive-missive',
-      component: _import('hwenbin/missive/receive')
+      component: _import('hwenbin/missive/receive'),
+      meta: { permission: ['missive:receive:list'] }
     }]
   },
 
@@ -200,25 +211,28 @@ export const asyncRouterMap = [
     redirect: '/workflow/category',
     icon: 'skill',
     name: '流程管理',
-    meta: { permission: ['manage'] },
+    meta: { permission: ['workflow'] },
     children: [
       {
         path: 'category',
         name: '流程分类',
         icon: 'nested',
-        component: _import('hwenbin/workflow/category/index')
+        component: _import('hwenbin/workflow/category/index'),
+        meta: { permission: ['workflow:category:list'] }
       },
       {
         path: 'form',
         name: '表单配置',
         icon: 'form',
-        component: _import('hwenbin/workflow/form/index')
+        component: _import('hwenbin/workflow/form/index'),
+        meta: { permission: ['workflow:form:list'] }
       },
       {
         path: 'definition',
         name: '流程定义',
         icon: 'example',
-        component: _import('hwenbin/workflow/definition/index')
+        component: _import('hwenbin/workflow/definition/index'),
+        meta: { permission: ['workflow:definition:list'] }
       }
     ]
   },
@@ -229,31 +243,35 @@ export const asyncRouterMap = [
     redirect: '/task/start',
     icon: 'job',
     name: '办公管理',
-    meta: { permission: ['manage'] },
+    meta: { permission: ['task'] },
     children: [
       {
         path: 'start',
         name: '新建流程',
         icon: 'guide',
-        component: _import('hwenbin/workflow/work/index')
+        component: _import('hwenbin/workflow/work/index'),
+        meta: { permission: ['task:start:list'] }
       },
       {
         path: 'process',
         name: '我的流程',
         icon: 'cascader',
-        component: _import('hwenbin/workflow/work/own')
+        component: _import('hwenbin/workflow/work/own'),
+        meta: { permission: ['task:process:list'] }
       },
       {
         path: 'todo',
         name: '待办任务',
         icon: 'time-range',
-        component: _import('hwenbin/workflow/work/todo')
+        component: _import('hwenbin/workflow/work/todo'),
+        meta: { permission: ['task:todo:list'] }
       },
       {
         path: 'finished',
         name: '已办任务',
         icon: 'checkbox',
-        component: _import('hwenbin/workflow/work/finished')
+        component: _import('hwenbin/workflow/work/finished'),
+        meta: { permission: ['task:finished:list'] }
       }
     ]
   },

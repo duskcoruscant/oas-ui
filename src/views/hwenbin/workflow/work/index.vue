@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('task:start:query')">
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -60,6 +61,7 @@
             size="mini"
             icon="el-icon-video-play"
             @click="handleStart(scope.row)"
+            v-if="hasPermission('task:start:initiate')"
           >发起</el-button>
         </template>
       </el-table-column>

@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('missive:receive:query')">
       <el-form-item label="流水号" prop="id">
         <el-input v-model="listQuery.id" placeholder="请输入流水号" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
@@ -30,7 +31,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                   >新增</el-button>
+                   v-if="hasPermission('missive:send:write')">新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading"
@@ -66,11 +67,11 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-search" @click="handleCheck(scope.row)"
-                     >查看</el-button>
+                     v-if="hasPermission('missive:receive:check')">查看</el-button>
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-                     >修改</el-button>
+                     v-if="hasPermission('missive:send:update')">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                     >删除</el-button>
+                     v-if="hasPermission('missive:send:delete')">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

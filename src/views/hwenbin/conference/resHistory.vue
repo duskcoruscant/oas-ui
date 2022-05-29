@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="82px">
+    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="82px"
+             v-if="hasPermission('conference:list:query')">
       <el-form-item label="会议室编号" prop="roomCode">
         <el-input v-model="listQuery.roomCode" placeholder="请输入会议室编号" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
@@ -30,7 +31,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAddRes"
-                   >预订会议</el-button>
+                   v-if="hasPermission('conference:reservation')">预订会议</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="pageQuery"></right-toolbar>
     </el-row>
@@ -57,7 +58,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-circle-close" @click="handleCancelRes(scope.row)"
-                     v-if="scope.row.processStatus === 1">取消会议</el-button>
+                     v-if="scope.row.processStatus === 1 && hasPermission('conference:list:cancel')">取消会议</el-button>
         </template>
       </el-table-column>
     </el-table>

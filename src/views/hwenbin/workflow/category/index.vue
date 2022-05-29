@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('workflow:category:query')">
       <el-form-item label="分类名称" prop="categoryName">
         <el-input
           v-model="queryParams.categoryName"
@@ -33,6 +34,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
+          v-if="hasPermission('workflow:category:add')"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -43,6 +45,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
+          v-if="hasPermission('workflow:category:update')"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,6 +56,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
+          v-if="hasPermission('workflow:category:delete')"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">

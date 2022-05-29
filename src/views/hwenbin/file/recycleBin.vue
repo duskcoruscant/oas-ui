@@ -5,7 +5,7 @@
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleClearRecycleBin"
-                       >清空回收站</el-button>
+                       v-if="hasPermission('file:recycle-bin:throughly-delete')">清空回收站</el-button>
           </el-col>
           <!-- <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleCreateFolder"
@@ -38,9 +38,9 @@
           <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button size="mini" type="text" icon="el-icon-download" @click="handleRecovery(scope.row)"
-                          >恢复</el-button>
+                          v-if="hasPermission('file:recycle-bin:recovery')">恢复</el-button>
               <el-button size="mini" type="text" icon="el-icon-download" @click="handleThroughlyDelete(scope.row)"
-                          >彻底删除</el-button>
+                          v-if="hasPermission('file:recycle-bin:throughly-delete')">彻底删除</el-button>
             </template>
           </el-table-column>
         </el-table>

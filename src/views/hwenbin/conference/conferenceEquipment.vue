@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="listQuery" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px" 
+             v-if="hasPermission('conference:equipment:query')">
       <el-form-item label="设备编号" prop="code">
         <el-input v-model="listQuery.code" placeholder="请输入设备编号" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
@@ -13,7 +14,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="handleQuery" v-if="hasPermission('conference:equipment:query')">搜索</el-button>
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -21,7 +22,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                   >新增</el-button>
+                   v-if="hasPermission('conference:equipment:add')">新增</el-button>
       </el-col>
       <!-- <el-col :span="1.5">
         <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading"
@@ -55,9 +56,9 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-                     >修改</el-button>
+                     v-if="hasPermission('conference:equipment:update')">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                     >删除</el-button>
+                     v-if="hasPermission('conference:equipment:delete')">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

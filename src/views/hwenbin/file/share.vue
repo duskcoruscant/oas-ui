@@ -4,11 +4,11 @@
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleCreateFolder"
-                       >新增文件夹</el-button>
+                       v-if="hasPermission('file:share:add-folder')">新增文件夹</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-upload2" size="mini" @click="handleUploadFile"
-                       >上传文件</el-button>
+                       v-if="hasPermission('file:share:upload')">上传文件</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button type="primary" icon="el-icon-download" size="mini" @click="handleBatchDownload" :loading="exportLoading"
@@ -17,7 +17,7 @@
           <el-col :span="6">
           <!-- <div class="top-right-search"> -->
             <el-input v-model="listQuery.name" placeholder="搜索共享文件" size="mini" maxlength="255" :clearable="true" 
-              @keyup.enter.native="handleQuery">
+              @keyup.enter.native="handleQuery" v-if="hasPermission('file:share:query')">
               <i slot="prefix" class="el-icon-search" title="点击搜索" @click="handleQuery"></i>
             </el-input>
           <!-- </div> -->
@@ -77,17 +77,17 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
             <template slot-scope="scope">
-              <el-button size="mini" type="text" icon="el-icon-download" @click="handleDownload(scope.row)" v-if="scope.row.type !== '文件夹'"
-                         >下载</el-button>
+              <el-button size="mini" type="text" icon="el-icon-download" @click="handleDownload(scope.row)" 
+                         v-if="scope.row.type !== '文件夹' && hasPermission('file:share:download')">下载</el-button>
               <el-dropdown  @command="(command) => handleCommand(command, scope.$index, scope.row)"
                             >
                 <span class="el-dropdown-link">
                   <i class="el-icon-d-arrow-right el-icon--right"></i>更多
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="handleRename" 
+                  <el-dropdown-item command="handleRename" v-if="hasPermission('file:share:rename')"
                     size="mini" type="text" icon="el-icon-edit-outline">重命名</el-dropdown-item>
-                  <el-dropdown-item command="handleDelete"
+                  <el-dropdown-item command="handleDelete" v-if="hasPermission('file:share:delete')"
                     size="mini" type="text" icon="el-icon-delete">删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

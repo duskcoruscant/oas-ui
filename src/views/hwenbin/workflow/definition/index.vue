@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('workflow:definition:query')">
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -32,6 +33,7 @@
           icon="el-icon-upload"
           size="mini"
           @click="handleImport"
+          v-if="hasPermission('workflow:definition:import')"
         >导入</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -41,6 +43,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
+          v-if="hasPermission('workflow:definition:add')"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -51,6 +54,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
+          v-if="hasPermission('workflow:definition:delete')"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -60,6 +64,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
+          v-if="hasPermission('workflow:definition:export')"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -107,6 +112,7 @@
             size="mini"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
+            v-if="hasPermission('workflow:definition:update')"
           >编辑</el-button>
           <el-button
             type="text"
@@ -125,12 +131,13 @@
               >流程图</el-dropdown-item>
               <el-dropdown-item
                 icon="el-icon-connection"
-                v-if="scope.row.formId == null"
+                v-if="scope.row.formId == null && hasPermission('workflow:definition:set-form')"
                 @click.native="handleAddForm(scope.row)"
               >配置表单</el-dropdown-item>
               <el-dropdown-item
                 icon="el-icon-price-tag"
                 @click.native="handlePublish(scope.row)"
+                v-if="hasPermission('workflow:definition:manage-version')"
               >版本管理</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

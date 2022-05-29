@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('task:process:query')">
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -33,6 +34,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
+          v-if="hasPermission('task:process:delete')"
         >删除</el-button>
       </el-col>
       <!-- <el-col :span="1.5">
@@ -83,13 +85,16 @@
               更多操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-tickets" @click.native="handleFlowRecord(scope.row)">
+              <el-dropdown-item icon="el-icon-tickets" @click.native="handleFlowRecord(scope.row)"
+                                v-if="hasPermission('task:process:check')">
                 详情
               </el-dropdown-item>
-              <el-dropdown-item icon="el-icon-circle-close" @click.native="handleStop(scope.row)">
+              <el-dropdown-item icon="el-icon-circle-close" @click.native="handleStop(scope.row)"
+                                v-if="hasPermission('task:process:cancel')">
                 取消申请
               </el-dropdown-item>
-              <el-dropdown-item icon="el-icon-delete" @click.native="handleDelete(scope.row)">
+              <el-dropdown-item icon="el-icon-delete" @click.native="handleDelete(scope.row)"
+                                v-if="hasPermission('task:process:delete')">
                 删除
               </el-dropdown-item>
             </el-dropdown-menu>

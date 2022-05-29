@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('task:finished:query')">
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -66,12 +67,14 @@
             type="text"
             icon="el-icon-tickets"
             @click="handleFlowRecord(scope.row)"
+            v-if="hasPermission('task:finished:flow-record')"
           >流转记录</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-tickets"
             @click="handleRevoke(scope.row)"
+            v-if="hasPermission('task:finished:revoke')"
           >撤回
           </el-button>
         </template>

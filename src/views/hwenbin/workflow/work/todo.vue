@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px"
+              v-if="hasPermission('task:todo:query')">
       <el-form-item label="名称" prop="name">
         <el-input
           v-model="queryParams.name"
@@ -66,6 +67,7 @@
             type="text"
             icon="el-icon-edit-outline"
             @click="handleProcess(scope.row)"
+            v-if="hasPermission('task:todo:process')"
           >处理
           </el-button>
         </template>

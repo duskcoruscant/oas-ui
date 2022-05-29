@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
+    <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true" v-if="hasPermission('work-log:send:query')">
       <el-form-item label="日志类型" prop="type">
         <el-select v-model="queryParams.type" placeholder="请选择日志类型" clearable>
           <el-option v-for="item in WorkLogTypeDict" :key="item.value" :label="item.label" :value="item.value"/>
@@ -15,7 +15,7 @@
           range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" v-if="hasPermission('work-log:send:query')">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -23,7 +23,7 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                   >新增</el-button>
+                   v-if="hasPermission('work-log:send:add')">新增</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -55,7 +55,7 @@
           <el-badge :value="scope.row.commentCount" class="item">
             <el-button size="mini" type="text" icon="el-icon-chat-dot-round" @click="handleCheckComment(scope.row)">评论</el-button>
           </el-badge>
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-if="hasPermission('work-log:send:update')"
                      style="padding-left: 12px">修改</el-button>
         </template>
       </el-table-column>
@@ -78,7 +78,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="通知人" prop="sendEmpIds">
+            <el-form-item label="通知人" prop="sendEmpIds" v-if="hasPermission('work-log:send:send')">
               <el-select v-model="form.sendEmpIds" multiple filterable placeholder="请选择" clearable>
                 <el-option v-for="item in sameDeptEmpOptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>

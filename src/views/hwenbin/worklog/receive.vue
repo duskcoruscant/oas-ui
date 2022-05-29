@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true">
+    <el-form :model="queryParams" ref="queryForm" v-show="showSearch" :inline="true" v-if="hasPermission('work-log:receive:query')">
       <el-form-item label="日志类型" prop="type">
         <el-select v-model="queryParams.type" placeholder="请选择日志类型" clearable>
           <el-option v-for="item in WorkLogTypeDict" :key="item.value" :label="item.label" :value="item.value"/>
@@ -15,7 +15,7 @@
           range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" v-if="hasPermission('work-log:receive:query')">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -42,7 +42,7 @@
             <el-form-item label="遇到的问题">
               <span>{{ scope.row.question }}</span>
             </el-form-item>
-            <el-form-item label="评论" label-width="120px;">
+            <el-form-item label="评论" label-width="120px;" v-if="hasPermission('work-log:receive:comment')">
               <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 5}" placeholder="请输入内容" v-model="scope.row.comment" />
               <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleComment(scope.row)">确定</el-button>
             </el-form-item>
@@ -77,7 +77,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-finished" @click="handleRead(scope.row)"
-                     v-if="scope.row.isRead === false">已读</el-button>
+                     v-if="scope.row.isRead === false && hasPermission('work-log:receive:read')">已读</el-button>
         </template>
       </el-table-column>
     </el-table>
