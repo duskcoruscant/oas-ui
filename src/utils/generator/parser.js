@@ -186,7 +186,7 @@ export default {
     },
     // 传值给父组件
     getData() {
-      debugger
+      // debugger
       this.$emit('getData', this[this.formConf.formModel])
       // this.$emit('getData',this.formConfCopy)
     }

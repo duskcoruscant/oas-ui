@@ -27,7 +27,7 @@ export default {
   download0(data, fileName, mineType) {
     // 创建 blob
     const blob = new Blob([data], { type: mineType })
-    debugger
+    // debugger
     // 创建 href 超链接，点击进行下载
     window.URL = window.URL || window.webkitURL
     const href = URL.createObjectURL(blob)
